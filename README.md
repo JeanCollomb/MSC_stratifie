@@ -31,9 +31,9 @@ Deux utilisations principales sont prévues par le script.
 
 Dans ce premier cas, l'empilement du stratifié est connu.
 
-1- Renseigner dans "empilement.xlsx" les différents plis (propriétés matériaux, épaisseurs plis, orientations).
-2- Laisser la colonne proportion vide ou mettre à 0.
-3- Excécuter "main_mecanique_stratifie.py"
+* Renseigner dans "empilement.xlsx" les différents plis (propriétés matériaux, épaisseurs plis, orientations).
+* Laisser la colonne proportion vide ou mettre à 0.
+* Excécuter "main_mecanique_stratifie.py"
 
 ```
 Excécution par l'invite de commande dans le dossier de travail :
@@ -44,9 +44,9 @@ python main_mecanique_stratifie.py
 
 Dans ce second cas, l'empilement du stratifié est inconnu, mais les proportions de chacun de angle l'est.
 
-1- Renseigner dans "empilement.xlsx" les différentes orientations de plis (propriétés matériau, épaisseurs pli, orientation).
-2- Renseigner la proportion pour chacune des orientations
-3- Excécuter "main_mecanique_stratifie.py"
+* Renseigner dans "empilement.xlsx" les différentes orientations de plis (propriétés matériau, épaisseurs pli, orientation).
+* Renseigner la proportion pour chacune des orientations
+* Excécuter "main_mecanique_stratifie.py"
 
 ```
 Excécution par l'invite de commande dans le dossier de travail :
