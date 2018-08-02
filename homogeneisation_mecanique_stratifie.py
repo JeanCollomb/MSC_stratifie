@@ -38,25 +38,26 @@ class Homogeneisation_Mecanique_Stratifie():
     Cas_1 = Homogeneisation_Mecanique(angles, epaisseurs, El, Et, Glt, Nult)
     """
     
-    def __init__ (self, liste_angles, liste_epaisseurs, liste_El, liste_Et, liste_Glt, liste_Nult) :
+    def __init__ (self, liste_angles, liste_epaisseurs, liste_El, liste_Et, liste_Glt, liste_Nult,liste_proportion) :
         """
         Fonction d'initialisation de la Class
         Donnees d'entrees : proprietes materiaux et angles de drapage.
         Les donnees d'entrees sont sous forme de listes.
         """
-        self.liste_angles = liste_angles
-        self.liste_epaisseurs = liste_epaisseurs
-        self.liste_El = liste_El
-        self.liste_Et = liste_Et
-        self.liste_Glt = liste_Glt
-        self.liste_Nult = liste_Nult
-        self.nombre_plis = len(liste_angles)
-        self.epaisseur_stratifie = sum(liste_epaisseurs)
-        self.altitude_inf_pli = self.altitudes()[0]
-        self.altitude_sup_pli = self.altitudes()[1]
-        self.liste_J = self.liste_J()
-        self.liste_Q0  = self.liste_Q0()
-        self.liste_Qx  = self.liste_Qx()
+        self.liste_angles       = liste_angles
+        self.liste_epaisseurs   = liste_epaisseurs
+        self.liste_El           = liste_El
+        self.liste_Et           = liste_Et
+        self.liste_Glt          = liste_Glt
+        self.liste_Nult         = liste_Nult
+        self.liste_proportion   = liste_proportion
+        self.nombre_plis        = len(liste_angles)
+        self.epaisseur_stratifie= sum(liste_epaisseurs)
+        self.altitude_inf_pli   = self.altitudes()[0]
+        self.altitude_sup_pli   = self.altitudes()[1]
+        self.liste_J            = self.liste_J()
+        self.liste_Q0           = self.liste_Q0()
+        self.liste_Qx           = self.liste_Qx()
     
     def altitudes (self):
         """
@@ -142,7 +143,7 @@ class Homogeneisation_Mecanique_Stratifie():
         matrice_Qx = np.dot(np.dot(matrice_J_inv, matrice_Q0), matrice_J_trans_inv)
         return matrice_Qx
     
-    def A (self, Qx, altitude_inf_pli, altitude_sup_pli):
+    def A (self, Qx, altitude_inf_pli, altitude_sup_pli, proportion=None):
         """
         Fonction permettant le calcul de la matrice A du pli.
         -------
@@ -151,19 +152,33 @@ class Homogeneisation_Mecanique_Stratifie():
             altitude_inf_pli [float]
             altitude_sup_pli [float]
         """
-        A11 = Qx[0][0] * (altitude_sup_pli - altitude_inf_pli)
-        A12 = Qx[0][1] * (altitude_sup_pli - altitude_inf_pli)
-        A13 = Qx[0][2] * (altitude_sup_pli - altitude_inf_pli)
-        A21 = Qx[1][0] * (altitude_sup_pli - altitude_inf_pli)
-        A22 = Qx[1][1] * (altitude_sup_pli - altitude_inf_pli)
-        A23 = Qx[1][2] * (altitude_sup_pli - altitude_inf_pli)
-        A31 = Qx[2][0] * (altitude_sup_pli - altitude_inf_pli)
-        A32 = Qx[2][1] * (altitude_sup_pli - altitude_inf_pli)
-        A33 = Qx[2][2] * (altitude_sup_pli - altitude_inf_pli)
-        matrice_A = np.array([[A11, A12, A13], [A21, A22, A23], [A31, A32, A33]])
+        if proportion == None:
+            A11 = Qx[0][0] * (altitude_sup_pli - altitude_inf_pli)
+            A12 = Qx[0][1] * (altitude_sup_pli - altitude_inf_pli)
+            A13 = Qx[0][2] * (altitude_sup_pli - altitude_inf_pli)
+            A21 = Qx[1][0] * (altitude_sup_pli - altitude_inf_pli)
+            A22 = Qx[1][1] * (altitude_sup_pli - altitude_inf_pli)
+            A23 = Qx[1][2] * (altitude_sup_pli - altitude_inf_pli)
+            A31 = Qx[2][0] * (altitude_sup_pli - altitude_inf_pli)
+            A32 = Qx[2][1] * (altitude_sup_pli - altitude_inf_pli)
+            A33 = Qx[2][2] * (altitude_sup_pli - altitude_inf_pli)
+            matrice_A = np.array([[A11, A12, A13], [A21, A22, A23], [A31, A32, A33]])
+        
+        else :
+            epaisseur_totale = self.epaisseur_stratifie
+            A11 = Qx[0][0] * epaisseur_totale * proportion
+            A12 = Qx[0][1] * epaisseur_totale * proportion
+            A13 = Qx[0][2] * epaisseur_totale * proportion
+            A21 = Qx[1][0] * epaisseur_totale * proportion
+            A22 = Qx[1][1] * epaisseur_totale * proportion
+            A23 = Qx[1][2] * epaisseur_totale * proportion
+            A31 = Qx[2][0] * epaisseur_totale * proportion
+            A32 = Qx[2][1] * epaisseur_totale * proportion
+            A33 = Qx[2][2] * epaisseur_totale * proportion
+            matrice_A = np.array([[A11, A12, A13], [A21, A22, A23], [A31, A32, A33]])
         return matrice_A
     
-    def B (self, Qx, altitude_inf_pli, altitude_sup_pli):
+    def B (self, Qx, altitude_inf_pli, altitude_sup_pli, proportion=None):
         """
         Fonction permettant le calcul de la matrice B.
         -------
@@ -184,7 +199,7 @@ class Homogeneisation_Mecanique_Stratifie():
         matrice_B = np.array([[B11, B12, B13], [B21, B22, B23], [B31, B32, B33]])
         return matrice_B
     
-    def D (self, Qx, altitude_inf_pli, altitude_sup_pli):
+    def D (self, Qx, altitude_inf_pli, altitude_sup_pli, proportion=None):
         """
         Fonction permettant le calcul de la matrice D.
         -------
@@ -241,30 +256,54 @@ class Homogeneisation_Mecanique_Stratifie():
         """
         Fonction permettant de stocker l'ensemble des matrices A dans une liste.
         """
-        liste_matrices_A = [self.A(self.liste_Qx[pli], 
-                                   self.altitude_inf_pli[pli], 
-                                   self.altitude_sup_pli[pli])
-                                    for pli in range(len(self.liste_angles))]
+        if sum(np.array(self.liste_proportion)) == 0:
+            liste_matrices_A = [self.A(self.liste_Qx[pli], 
+                                       self.altitude_inf_pli[pli], 
+                                       self.altitude_sup_pli[pli])
+                                        for pli in range(len(self.liste_angles))]
+        else :
+            liste_matrices_A = [self.A(self.liste_Qx[pli], 
+                                       self.altitude_inf_pli[pli], 
+                                       self.altitude_sup_pli[pli],
+                                       self.liste_proportion[pli]/100)
+                                        for pli in range(len(self.liste_angles))]
+        
         return liste_matrices_A
     
     def liste_B (self):
         """
         Fonction permettant de stocker l'ensemble des matrices B dans une liste.
         """
-        liste_matrices_B = [self.B(self.liste_Qx[pli], 
-                                   self.altitude_inf_pli[pli], 
-                                   self.altitude_sup_pli[pli])
-                                    for pli in range(len(self.liste_angles))]
+        if sum(np.array(self.liste_proportion)) == 0:
+            liste_matrices_B = [self.B(self.liste_Qx[pli], 
+                                       self.altitude_inf_pli[pli], 
+                                       self.altitude_sup_pli[pli])
+                                        for pli in range(len(self.liste_angles))]
+        else :
+            liste_matrices_B = [self.B(self.liste_Qx[pli], 
+                                       self.altitude_inf_pli[pli], 
+                                       self.altitude_sup_pli[pli],
+                                       self.liste_proportion[pli]/100)
+                                        for pli in range(len(self.liste_angles))]
+        
         return liste_matrices_B
     
     def liste_D (self):
         """
         Fonction permettant de stocker l'ensemble des matrices D dans une liste.
         """
-        liste_matrices_D = [self.D(self.liste_Qx[pli], 
-                                   self.altitude_inf_pli[pli], 
-                                   self.altitude_sup_pli[pli])
-                                    for pli in range(len(self.liste_angles))]
+        if sum(np.array(self.liste_proportion)) == 0:
+            liste_matrices_D = [self.D(self.liste_Qx[pli], 
+                                       self.altitude_inf_pli[pli], 
+                                       self.altitude_sup_pli[pli])
+                                        for pli in range(len(self.liste_angles))]
+        else :
+            liste_matrices_D = [self.D(self.liste_Qx[pli], 
+                                       self.altitude_inf_pli[pli], 
+                                       self.altitude_sup_pli[pli],
+                                       self.liste_proportion[pli]/100)
+                                        for pli in range(len(self.liste_angles))]
+        
         return liste_matrices_D
     
     def ABD (self):

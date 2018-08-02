@@ -36,14 +36,15 @@ informations = pd.read_excel('empilement.xlsx')
 """
 Stockage de chaque propriete dans des listes.
 """
-liste_angles = informations['angle'].tolist()
-liste_epaisseurs = informations['epaisseur'].tolist()
-liste_El = informations['El'].tolist()
-liste_Et = informations['Et'].tolist()
-liste_Glt = informations['Glt'].tolist()
-liste_Nult = informations['Nult'].tolist()
-liste_pli = informations['Pli'].tolist()
-temps_fin_extraction = time.time()
+liste_angles        = informations['angle'].tolist()
+liste_epaisseurs    = informations['epaisseur'].tolist()
+liste_El            = informations['El'].tolist()
+liste_Et            = informations['Et'].tolist()
+liste_Glt           = informations['Glt'].tolist()
+liste_Nult          = informations['Nult'].tolist()
+liste_pli           = informations['Pli'].tolist()
+liste_proportion    = informations['proportion (%)'].fillna(0).tolist()
+temps_fin_extraction= time.time()
 
 
 #------------------------ Realisation des calculs
@@ -54,7 +55,7 @@ presente dans le fichier homogeneisation_mecanique.py
 Extraction des proprietes homogeneisees du stratifie.
 """
 temps_depart_calculs = time.time()
-Calcul = Homogeneisation_Mecanique_Stratifie(liste_angles, liste_epaisseurs, liste_El, liste_Et, liste_Glt, liste_Nult)
+Calcul = Homogeneisation_Mecanique_Stratifie(liste_angles, liste_epaisseurs, liste_El, liste_Et, liste_Glt, liste_Nult, liste_proportion)
 Ex_stratifie = Calcul.proprietes_mecaniques_stratifie()[0]
 Ey_stratifie = Calcul.proprietes_mecaniques_stratifie()[1]
 Gxy_stratifie = Calcul.proprietes_mecaniques_stratifie()[2]

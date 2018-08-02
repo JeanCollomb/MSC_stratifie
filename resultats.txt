@@ -1,0 +1,56 @@
+----------------------
+-------------RESULTATS
+----------------------
+
+
+Ci-après, les resultats obtenus pour l'homogénéisation des propriétés mécaniques du stratifié
+Les calculs MSC permettent d'estimer les proprietes mecaniques finales du stratifie composite 
+en se basant sur les proprietes mecaniques de chaque pli. 
+
+
+Le stratifie etudie est compose de : 4 plis
+L'epaisseur du stratifie est de : 1.28 mm
+
+
+-----Donnees d'entrees
+----------------------
+     angle  epaisseur      El    Et   Glt  Nult  proportion (%)
+Pli                                                            
+1        0       0.32  130000  7000  4200  0.25              60
+2       90       0.32  130000  7000  4200  0.25              20
+3      -45       0.32  130000  7000  4200  0.25              10
+4       45       0.32  130000  7000  4200  0.25              10
+
+
+-----Donnees intermediaires
+---------------------------
+Matrice A         : 
+[[ 112072.7    9745.2       0. ]
+ [   9745.2   48884.1       0. ]
+ [      0.        0.    12873.7]]
+Matrice B         : 
+[[-12317.    5998.1   3159.4]
+ [  5998.1    320.7   3159.4]
+ [  3159.4   3159.4   5998.1]]
+Matrice D         : 
+[[ 13496.5   2866.1   2022. ]
+ [  2866.1   5408.4   2022. ]
+ [  2022.    2022.    3293.2]]
+
+
+-----Donnees de sorties
+-----------------------
+Module Ex (MPa)    : 86039.1
+Module Ey (MPa)    : 37528.7
+Module Ez (MPa)    : 7000.0
+Module Gxy (MPa)   : 10057.5
+Coefficient Nuxy   : 0.199
+
+
+-----Information
+-----------------------
+
+temps d'extraction des donnees : 0.013 secondes
+temps de calculs               : 0.0 secondes
+temps d'ecriture               : 0.013 secondes
+temps total                    : 0.026 secondes
